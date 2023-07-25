@@ -1,6 +1,10 @@
 import os
 import shutil
 
+VERSION = "1.1.1"
+
+print(f"WipeNode v{VERSION}")
+
 
 class Fore:
     GREEN = "\033[32m"
@@ -26,19 +30,24 @@ def format_size(size):
 
 def remove_node_modules(path):
     total_memory_freed = 0
-    for root, dirs, _ in os.walk(path):
-        for name in dirs:
-            if name == 'node_modules':
-                node_modules_path = os.path.join(root, name)
-                memory_freed = get_dir_size(node_modules_path)
+    try:
+        for name in os.listdir(path):
+            full_path = os.path.join(path, name)
+            if os.path.isdir(full_path) and name == "node_modules":
+                memory_freed = get_dir_size(full_path)
                 total_memory_freed += memory_freed
-                print(
-                    f"{Fore.GREEN}Removing {node_modules_path} ({format_size(memory_freed)}){Fore.RESET}")
                 try:
-                    shutil.rmtree(node_modules_path)
+                    shutil.rmtree(full_path)
                 except Exception as e:
                     print(
-                        f"{Fore.RED}An error occurred while trying to remove {node_modules_path}: {e}{Fore.RESET}")
+                        f"{Fore.RED}An error occurred while trying to remove {full_path}: {e}{Fore.RESET}")
+                print(
+                    f"{Fore.GREEN}Removed {full_path} ({format_size(memory_freed)}){Fore.RESET}")
+            elif os.path.isdir(full_path):
+                total_memory_freed += remove_node_modules(full_path)
+    except Exception as e:
+        print(
+            f"{Fore.RED}An error occurred while trying to traverse {full_path}: {e}{Fore.RESET}")
     return total_memory_freed
 
 

@@ -1,15 +1,15 @@
-
 # Wipenode
+
 Python script that will remove all node modules using recursion
 
 # Instructions (MAC)
 
- To make the script callable from anywhere using the `wipenode` command, you can follow these steps:
+To make the script callable from anywhere using the `wipenode` command, you can follow these steps:
 
 1. Move the `wipenode.py` file to a directory that's in your system's `$PATH`. For instance, you can move it to `/usr/local/bin`:
 
 ```bash
-mv wipenode.py /usr/local/bin
+cp wipenode.py /usr/local/bin
 ```
 
 2. Create a new shell script named `wipenode` in the same directory (`/usr/local/bin`):
@@ -19,7 +19,6 @@ touch /usr/local/bin/wipenode
 ```
 
 3. Open the `wipenode` file in a text editor and add the following content:
-
 
 ```bash
 #!/bin/bash
